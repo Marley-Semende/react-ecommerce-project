@@ -1,31 +1,51 @@
-import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 import Button from "./Button";
-import categories from "../fake-data/all-categories";
 
-const Header = ({ onButtonClick }) => {
-  const handleClick = (category) => {
-    onButtonClick(category);
-  };
+const Header = ({ onCategoryClick }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "https://fakestoreapi.com/products/categories"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
+        const data = await response.json();
+        setCategories(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <header>
       <h1>Products</h1>
-
       <div className="button-container">
         {categories.map((category) => (
           <Button
             key={category}
-            button={category}
-            onButtonClick={handleClick}
+            label={category}
+            onClick={() => onCategoryClick(category)}
           />
         ))}
       </div>
     </header>
   );
-};
-
-Header.propTypes = {
-  onButtonClick: PropTypes.func.isRequired,
 };
 
 export default Header;

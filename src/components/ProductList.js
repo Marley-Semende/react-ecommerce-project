@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import ProductCard from "./ProductCard";
+import { Link } from "react-router-dom";
+import { ProductCard } from "./ProductCard";
 
 const ProductList = ({ selectedCategory, products }) => {
   const filteredProducts = selectedCategory
@@ -9,26 +9,17 @@ const ProductList = ({ selectedCategory, products }) => {
   return (
     <div className="product-list">
       {filteredProducts.map((product) => (
-        <ProductCard
-          key={product.id}
-          title={product.title}
-          image={product.image}
-          price={product.price}
-          rate={product.rating.rate}
-        />
+        <Link to={`/product/${product.id}`} key={product.id}>
+          <ProductCard
+            title={product.title}
+            image={product.image}
+            price={product.price}
+            rate={product.rating.rate}
+          />
+        </Link>
       ))}
     </div>
   );
 };
 
-ProductList.propTypes = {
-  selectedCategory: PropTypes.string,
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
 export default ProductList;

@@ -1,19 +1,15 @@
 import PropTypes from "prop-types";
 
-const Button = ({ button, onButtonClick }) => {
-  const handleClick = () => {
-    onButtonClick(button);
-  };
-
+const Button = ({ label, onClick }) => {
   return (
     <div className="btn-container">
-      <button onClick={handleClick}>{button}</button>
+      <button onClick={() => onClick(label)}>{label}</button>
     </div>
   );
 };
 Button.propTypes = {
-  button: PropTypes.string.isRequired,
-  onButtonClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Button;

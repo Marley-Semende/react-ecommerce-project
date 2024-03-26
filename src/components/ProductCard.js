@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 
+const euroSymbol = String.fromCodePoint(0x020ac);
+
 const ProductCard = ({ image, title, rate, price }) => {
-  const euroSymbol = String.fromCodePoint(0x020ac);
   const ratingIcon =
     "https://icons.veryicon.com/png/o/commerce-shopping/mivi-official-mall/star-rating-5.png";
   return (
@@ -28,4 +29,4 @@ ProductCard.propTypes = {
   price: PropTypes.string.isRequired,
 };
 
-export default ProductCard;
+export { ProductCard, euroSymbol };
