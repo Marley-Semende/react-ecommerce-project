@@ -1,33 +1,12 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { euroSymbol } from "./ProductCard";
+import useFetch from "./useFetch";
 
 const DetailPage = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch product details");
-        }
-
-        const data = await response.json();
-        setProduct(data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
+  const { data, loading, error } = useFetch(
+    `https://fakestoreapi.com/products/${id}`
+  );
 
   if (loading) {
     return <div className="loading">Loading...Loading...</div>;
@@ -37,9 +16,11 @@ const DetailPage = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (!product) {
+  if (!data) {
     return <div>Product not found</div>;
   }
+
+  const product = data;
 
   return (
     <div className="detail-page">
